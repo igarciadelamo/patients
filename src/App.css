@@ -1,0 +1,24 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 100%;
+}
+
+.App-header {
+  background-color: blanchedalmond;
+  height: 120px;
+  color: white;
+}
+
+.App-title {
+    background-color: blanchedalmond;
+    height: 0px;
+    padding-top: 10px;
+    color: black;
+}
+
+.App-intro {
+  font-size: large;
+}
