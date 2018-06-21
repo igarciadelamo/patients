@@ -4,7 +4,12 @@ Web application written in React in order to manage patients and their treatment
 
 ## Why?
 
-The main reason is to use React in a personal project.
+The main reason is to learn and use React in a personal project.
+
+Also, the use of Firebase as backend for the application.
+
+This is my first pet project using React, so any help will be welcome!
+
 
 ## Previous steps
 
@@ -32,6 +37,7 @@ export default config;
 To run the application from local:
 
 > yarn run start
+
 
 
 
