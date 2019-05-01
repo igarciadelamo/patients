@@ -39,7 +39,7 @@ const styles = theme => ({
     },
 });
 
-class SearchResultTable extends Component {
+class PatientTable extends Component {
 
     update = (id) => {
         this.props.update(id)
@@ -90,8 +90,8 @@ class SearchResultTable extends Component {
     }
 }
 
-SearchResultTable.propTypes = {
+PatientTable.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(SearchResultTable);
+export default withStyles(styles)(PatientTable);

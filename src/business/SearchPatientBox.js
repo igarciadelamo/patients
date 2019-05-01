@@ -24,7 +24,7 @@ const styles = theme => ({
     },
 });
 
-class SearchBox extends Component {
+class SearchPatientBox extends Component {
 
     state = {
         name: '',
@@ -70,8 +70,8 @@ class SearchBox extends Component {
     }
 }
 
-SearchBox.propTypes = {
+SearchPatientBox.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(SearchBox);
+export default withStyles(styles)(SearchPatientBox);

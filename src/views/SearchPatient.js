@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Patient from '../business/Patient';
-import SearchBox from '../business/SearchBox';
-import SearchResultTable from "../business/SearchResultTable";
+import SearchBox from '../business/SearchPatientBox';
+import SearchResultTable from "../business/PatientTable";
 import firebase from "firebase/index";
 import Confirmation from "../common/Confirmation";
 import ModalForm from "../common/ModalForm";
@@ -25,13 +25,13 @@ class SearchPatient extends Component {
     }
 
     updateList = () => {
-        const list = this.executeQuery();
+        const list = this.executeFindAll();
         this.setState({
             patients: this.filterPatients(this.state.fields, list)
         });
     };
 
-    executeQuery = () => {
+    executeFindAll = () => {
         const data = [];
         const patientsRef = firebase.database().ref('patients/' + this.getUser());
         patientsRef.orderByChild("name").on("value", function(item) {
@@ -72,7 +72,7 @@ class SearchPatient extends Component {
     };
 
     search = fields => {
-        const list = this.executeQuery();
+        const list = this.executeFindAll();
         this.setState({
             fields: fields,
             patients: this.filterPatients(fields, list)
