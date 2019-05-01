@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import SearchBox from '../business/SearchBillBox';
+import SearchResultTable from "../business/BillTable";
+
 import firebase from "firebase/index";
 
 class SearchBill extends Component {
@@ -20,18 +22,18 @@ class SearchBill extends Component {
     updateList = () => {
         const list = this.executeFindAll();
         this.setState({
-            patients: this.filterBills(this.state.fields, list)
+            bills: this.filterBills(this.state.fields, list)
         });
     };
 
     executeFindAll = () => {
         const data = [];
-        const patientsRef = firebase.database().ref('bills/' + this.getUser());
-        patientsRef.orderByChild("name").on("value", function(item) {
+        const billsRef = firebase.database().ref('bills/' + this.getUser());
+        billsRef.orderByChild("date").on("value", function(item) {
             item.forEach(function(snapshot) {
-                const patient = snapshot.val();
-                patient.id = snapshot.key;
-                data.push(patient);
+                const bill = snapshot.val();
+                bill.id = snapshot.key;
+                data.push(bill);
             });
         });
         console.log("Found " + data.length + " bills in database");
@@ -42,8 +44,8 @@ class SearchBill extends Component {
         return this.props.user.uid;
     };
 
-    filterBills = (fields, patients) => {
-        return !fields ? [] : patients.filter(item => this.filterBill(fields, item))
+    filterBills = (fields, bills) => {
+        return !fields ? [] : bills.filter(item => this.filterBill(fields, item))
     };
 
     filterBill = (fields, item) => {
@@ -67,6 +69,7 @@ class SearchBill extends Component {
         return (
             <div>
                 <SearchBox search={this.search}/>
+                <SearchResultTable bills={this.state.bills} />
             </div>
         );
     }

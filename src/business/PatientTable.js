@@ -50,43 +50,48 @@ class PatientTable extends Component {
     };
 
     render() {
-        const {classes} = this.props;
-
-        return (
-            <Paper className={classes.root}>
-                <Table className={classes.table}>
-                    <TableHead>
-                        <TableRow>
-                            <CustomTableCell>Nombre</CustomTableCell>
-                            <CustomTableCell>DNI/NIF</CustomTableCell>
-                            <CustomTableCell>Contacto</CustomTableCell>
-                            <CustomTableCell>Dirección</CustomTableCell>
-                            <CustomTableCell>Acciones</CustomTableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {this.props.patients.map(n => {
-                            return (
-                                <TableRow className={classes.row} key={n.id}>
-                                    <CustomTableCell component="th" scope="row">{n.name}</CustomTableCell>
-                                    <CustomTableCell>{n.dni}</CustomTableCell>
-                                    <CustomTableCell>{n.email} <br/> {n.phone}</CustomTableCell>
-                                    <CustomTableCell>{n.address} <br/> {n.zip} {n.locality} ({n.province})</CustomTableCell>
-                                    <CustomTableCell>
-                                        <IconButton aria-label="Edit" color="primary" onClick={() => this.update(n.id)}>
-                                            <UpdateIcon/>
-                                        </IconButton>
-                                        <IconButton aria-label="Delete" onClick={() => this.delete(n.id)}>
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    </CustomTableCell>
-                                </TableRow>
-                            );
-                        })}
-                    </TableBody>
-                </Table>
-            </Paper>
-        );
+        if (this.props.patients == null || this.props.patients.length === 0) {
+            return null;
+        } else {
+            const {classes} = this.props;
+            return (
+                <Paper className={classes.root}>
+                    <Table className={classes.table}>
+                        <TableHead>
+                            <TableRow>
+                                <CustomTableCell>Nombre</CustomTableCell>
+                                <CustomTableCell>DNI/NIF</CustomTableCell>
+                                <CustomTableCell>Contacto</CustomTableCell>
+                                <CustomTableCell>Dirección</CustomTableCell>
+                                <CustomTableCell>Acciones</CustomTableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {this.props.patients.map(n => {
+                                return (
+                                    <TableRow className={classes.row} key={n.id}>
+                                        <CustomTableCell component="th" scope="row">{n.name}</CustomTableCell>
+                                        <CustomTableCell>{n.dni}</CustomTableCell>
+                                        <CustomTableCell>{n.email} <br/> {n.phone}</CustomTableCell>
+                                        <CustomTableCell>{n.address}
+                                            <br/> {n.zip} {n.locality} ({n.province})</CustomTableCell>
+                                        <CustomTableCell>
+                                            <IconButton aria-label="Edit" color="primary"
+                                                        onClick={() => this.update(n.id)}>
+                                                <UpdateIcon/>
+                                            </IconButton>
+                                            <IconButton aria-label="Delete" onClick={() => this.delete(n.id)}>
+                                                <DeleteIcon/>
+                                            </IconButton>
+                                        </CustomTableCell>
+                                    </TableRow>
+                                );
+                            })}
+                        </TableBody>
+                    </Table>
+                </Paper>
+            );
+        }
     }
 }
 

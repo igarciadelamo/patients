@@ -7,21 +7,30 @@ import Button from '@material-ui/core/Button';
 const styles = theme => ({
     container: {
         backgroundColor: 'lightgrey',
+        display: 'flex',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+    },
+    groupTextFields: {
+        marginTop: 0,
+        flexGrow: 3,
+        display: 'flex',
+        flexWrap: 'wrap',
     },
     textFieldLarge: {
+        marginTop: 0,
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
-        width: 400,
+        flexGrow: 0.5,
     },
     textFieldSmall: {
+        marginTop: 0,
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
-        width: 200,
     },
-    button: {
-        padding: 0,
-        margin: 0,
-    },
+    groupButton: {
+        paddingRight: 10,
+    }
 });
 
 class SearchPatientBox extends Component {
@@ -44,29 +53,31 @@ class SearchPatientBox extends Component {
     render() {
         const { classes } = this.props;
 
-        return (
-            <form className={classes.container} noValidate autoComplete="off">
-                <TextField
-                    id="name"
-                    label="Nombre"
-                    className={classes.textFieldLarge}
-                    value={this.state.name}
-                    onChange={this.handleChange('name')}
-                    margin="dense"
-                />
-                <TextField
-                    id="phone"
-                    label="Teléfono"
-                    className={classes.textFieldSmall}
-                    value={this.state.phone}
-                    onChange={this.handleChange('phone')}
-                    margin="dense"
-                />
-                <Button variant="outlined" color="primary" size="small" onClick={this.search}>
-                    Buscar
-                </Button>
-            </form>
-        );
+        return <div className={classes.container}>
+                <span className={classes.groupTextFields}>
+                    <TextField
+                        id="name"
+                        label="Nombre"
+                        className={classes.textFieldLarge}
+                        value={this.state.name}
+                        onChange={this.handleChange('name')}
+                        margin="dense"
+                    />
+                    <TextField
+                        id="phone"
+                        label="Teléfono"
+                        className={classes.textFieldSmall}
+                        value={this.state.phone}
+                        onChange={this.handleChange('phone')}
+                        margin="dense"
+                    />
+                </span>
+                <span className={classes.groupButton}>
+                    <Button variant="outlined" color="primary" size="small" onClick={this.search}>
+                        Buscar
+                    </Button>
+                </span>
+        </div>;
     }
 }
 

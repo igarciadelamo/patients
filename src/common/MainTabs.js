@@ -25,10 +25,6 @@ class MainTabs extends Component {
         this.setState({ value });
     };
 
-    handleChangeIndex = index => {
-        this.setState({ value: index });
-    };
-
     render() {
         const { value } = this.state;
         return (
