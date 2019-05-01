@@ -39,7 +39,7 @@ class NewPatient extends Component {
 
     save = (data) => {
         const user = this.props.user.uid;
-        const patientsRef = firebase.database().ref('patients/' + user);
+        const patientsRef = firebase.database().ref(user + '/patients/');
         const patient = patientsRef.push();
         patient.set(data).then(() => {
             this.showMessage(true);
