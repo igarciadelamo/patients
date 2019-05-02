@@ -39,7 +39,7 @@ const styles = theme => ({
     },
 });
 
-class SearchResultTable extends Component {
+class BillTable extends Component {
 
     update = (id) => {
         this.props.update(id)
@@ -65,7 +65,7 @@ class SearchResultTable extends Component {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {this.props.patients.map(n => {
+                        {this.props.bills.map(n => {
                             return (
                                 <TableRow className={classes.row} key={n.id}>
                                     <CustomTableCell component="th" scope="row">{n.name}</CustomTableCell>
@@ -90,8 +90,8 @@ class SearchResultTable extends Component {
     }
 }
 
-SearchResultTable.propTypes = {
+BillTable.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(SearchResultTable);
+export default withStyles(styles)(BillTable);

@@ -6,6 +6,7 @@ import SearchPatient from "../views/SearchPatient";
 
 import { withStyles } from '@material-ui/core/styles';
 import NewPatient from "../views/NewPatient";
+import SearchBill from "../views/SearchBill";
 
 const styles = theme => ({
     root: {
@@ -24,10 +25,6 @@ class MainTabs extends Component {
         this.setState({ value });
     };
 
-    handleChangeIndex = index => {
-        this.setState({ value: index });
-    };
-
     render() {
         const { value } = this.state;
         return (
@@ -40,7 +37,7 @@ class MainTabs extends Component {
                 </Tabs>
                 {value === 0 && <TabView><SearchPatient user={this.props.user}/></TabView>}
                 {value === 1 && <TabView><NewPatient user={this.props.user}/></TabView>}
-                {value === 2 && <TabView/>}
+                {value === 2 && <TabView><SearchBill user={this.props.user}/></TabView>}
                 {value === 3 && <TabView/>}
             </div>
         )
