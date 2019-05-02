@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Patient from '../business/Patient';
-import SearchBox from '../business/SearchPatientBox';
+import SearchBox from '../common/SearchBox';
 import SearchResultTable from "../business/PatientTable";
 import firebase from "firebase/index";
 import Confirmation from "../common/Confirmation";
@@ -68,7 +68,7 @@ class SearchPatient extends Component {
     };
 
     filterPatient = (fields, item) => {
-        return this.filterByField(fields.phone, item.phone) && this.filterByField(fields.name, item.name)
+        return this.filterByField(fields.secondary, item.phone) && this.filterByField(fields.primary, item.name)
     };
 
     filterByField = (filter, item) => {
@@ -147,7 +147,7 @@ class SearchPatient extends Component {
 
         return (
             <div>
-                <SearchBox search={this.search} />
+                <SearchBox search={this.search} primaryLabel="Nombre" secondaryLabel="Teléfono" />
                 <SearchResultTable patients={this.state.patients} delete={this.delete} update={this.update}/>
                 <Confirmation open={this.state.showDeleteAlert}
                               title="Borrar paciente"

@@ -33,11 +33,11 @@ const styles = theme => ({
     }
 });
 
-class SearchBillBox extends Component {
+class SearchBox extends Component {
 
     state = {
-        patient: '',
-        bill: ''
+        primary: '',
+        secondary: ''
     };
 
     search = () => {
@@ -56,19 +56,19 @@ class SearchBillBox extends Component {
         return <div className={classes.container}>
                 <span className={classes.groupTextFields}>
                     <TextField
-                        id="patient"
-                        label="Nombre del paciente"
+                        id="primary"
+                        label={this.props.primaryLabel}
                         className={classes.textFieldLarge}
-                        value={this.state.patient}
-                        onChange={this.handleChange('patient')}
+                        value={this.state.primary}
+                        onChange={this.handleChange('primary')}
                         margin="dense"
                     />
                     <TextField
-                        id="bill"
-                        label="Número de factura"
+                        id="secondary"
+                        label={this.props.secondaryLabel}
                         className={classes.textFieldSmall}
-                        value={this.state.bill}
-                        onChange={this.handleChange('bill')}
+                        value={this.state.secondary}
+                        onChange={this.handleChange('secondary')}
                         margin="dense"
                     />
                 </span>
@@ -81,8 +81,8 @@ class SearchBillBox extends Component {
     }
 }
 
-SearchBillBox.propTypes = {
+SearchBox.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(SearchBillBox);
+export default withStyles(styles)(SearchBox);

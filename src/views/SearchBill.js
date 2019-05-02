@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SearchBox from '../business/SearchBillBox';
+import SearchBox from '../common/SearchBox';
 import SearchResultTable from "../business/BillTable";
 
 import firebase from "firebase/index";
@@ -68,7 +68,7 @@ class SearchBill extends Component {
     render(){
         return (
             <div>
-                <SearchBox search={this.search}/>
+                <SearchBox search={this.search} primaryLabel="Nombre" secondaryLabel="Num. Factura" />
                 <SearchResultTable bills={this.state.bills} />
             </div>
         );
