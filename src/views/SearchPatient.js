@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Patient from '../business/Patient';
-import SearchBox from '../business/SearchPatientBox';
+import SearchBox from '../common/SearchBox';
 import SearchResultTable from "../business/PatientTable";
 import firebase from "firebase/index";
 import Confirmation from "../common/Confirmation";
@@ -33,7 +33,7 @@ class SearchPatient extends Component {
 
     executeFindAll = () => {
         const data = [];
-        const patientsRef = firebase.database().ref('patients/' + this.getUser());
+        const patientsRef = firebase.database().ref(this.getBasePath());
         patientsRef.orderByChild("name").on("value", function(item) {
             item.forEach(function(snapshot) {
                 const patient = snapshot.val();
@@ -47,7 +47,7 @@ class SearchPatient extends Component {
 
     executeFindOne = (id) => {
         let patient = {};
-        const patientsRef = firebase.database().ref('patients/' + this.getUser() + '/' + id);
+        const patientsRef = firebase.database().ref(this.getBasePath() + id);
         patientsRef.on("value", function(snapshot) {
             patient = snapshot.val();
             console.log("Got patient by id", patient)
@@ -59,12 +59,16 @@ class SearchPatient extends Component {
       return this.props.user.uid;
     };
 
+    getBasePath = () => {
+        return this.getUser()  + '/patients/';
+    };
+
     filterPatients = (fields, patients) => {
         return !fields ? [] : patients.filter(item => this.filterPatient(fields, item))
     };
 
     filterPatient = (fields, item) => {
-        return this.filterByField(fields.phone, item.phone) && this.filterByField(fields.name, item.name)
+        return this.filterByField(fields.secondary, item.phone) && this.filterByField(fields.primary, item.name)
     };
 
     filterByField = (filter, item) => {
@@ -110,7 +114,7 @@ class SearchPatient extends Component {
 
     doDelete = () => {
         console.log("Delete final by id", this.state.selectedPatient) ;
-        const patientRef = firebase.database().ref('patients/' + this.getUser() + "/" + this.state.selectedPatient);
+        const patientRef = firebase.database().ref(this.getBasePath() + this.state.selectedPatient);
         patientRef.remove()
             .then(this.updateList)
             .catch(error => { console.error("Error deleting patient ", error)});
@@ -119,7 +123,7 @@ class SearchPatient extends Component {
 
     doUpdate = () => {
         console.log("Updating final by id", this.state.selectedPatient) ;
-        const patientRef = firebase.database().ref('patients/' + this.getUser() + "/" + this.state.selectedPatient);
+        const patientRef = firebase.database().ref(this.getBasePath() + this.state.selectedPatient);
         patientRef.update(this.state.patientData)
             .then(this.updateList)
             .then(this.cancelUpdate)
@@ -143,7 +147,7 @@ class SearchPatient extends Component {
 
         return (
             <div>
-                <SearchBox search={this.search} />
+                <SearchBox search={this.search} primaryLabel="Nombre" secondaryLabel="Teléfono" />
                 <SearchResultTable patients={this.state.patients} delete={this.delete} update={this.update}/>
                 <Confirmation open={this.state.showDeleteAlert}
                               title="Borrar paciente"
