@@ -8,7 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
-import SeeIcon from '@material-ui/icons/Visibilityg';
+import SeeIcon from '@material-ui/icons/Visibility';
 
 const CustomTableCell = withStyles(theme => ({
     head: {
