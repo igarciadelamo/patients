@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Patient from '../business/Patient';
+import Invoice from '../business/Invoice';
 import SearchBox from '../common/SearchBox';
 import SearchResultTable from "../business/PatientTable";
 import firebase from "firebase/index";
@@ -15,7 +16,9 @@ class SearchPatient extends Component {
             fields: null,
             showDeleteAlert: false,
             showEditionModel: false,
+            showInvoiceModel: false,
             patientData : {},
+            invoiceData: {},
             validations : {}
         };
     };
@@ -33,7 +36,7 @@ class SearchPatient extends Component {
 
     executeFindAll = () => {
         const data = [];
-        const patientsRef = firebase.database().ref(this.getBasePath());
+        const patientsRef = firebase.database().ref(this.getRefPatientPath());
         patientsRef.orderByChild("name").on("value", function(item) {
             item.forEach(function(snapshot) {
                 const patient = snapshot.val();
@@ -47,7 +50,7 @@ class SearchPatient extends Component {
 
     executeFindOne = (id) => {
         let patient = {};
-        const patientsRef = firebase.database().ref(this.getBasePath() + id);
+        const patientsRef = firebase.database().ref(this.getRefPatientPath() + id);
         patientsRef.on("value", function(snapshot) {
             patient = snapshot.val();
             console.log("Got patient by id", patient)
@@ -59,8 +62,12 @@ class SearchPatient extends Component {
       return this.props.user.uid;
     };
 
-    getBasePath = () => {
+    getRefPatientPath = () => {
         return this.getUser()  + '/patients/';
+    };
+
+    getRefInvoicePath = () => {
+        return this.getUser()  + '/invoices/';
     };
 
     filterPatients = (fields, patients) => {
@@ -98,6 +105,23 @@ class SearchPatient extends Component {
         });
     };
 
+    addInvoice = id => {
+        const patient = this.executeFindOne(id);
+        this.setState({
+            showInvoiceModel: true,
+            selectedPatient: id,
+            patientData: patient,
+            invoiceData: {
+                tax : 21,
+                date: new Date().toISOString().substring(0, 10),
+                patientName: patient.name,
+                patientIdCard: patient.dni,
+                patientRef: id
+
+            }
+        });
+    };
+
     cancelDelete = () => {
         this.setState({
             showDeleteAlert : false,
@@ -108,13 +132,23 @@ class SearchPatient extends Component {
     cancelUpdate = () => {
         this.setState({
             showEditionModel : false,
-            selectedPatient: null
+            selectedPatient: null,
+            patientData: {},
+        });
+    };
+
+    cancelInvoice = () => {
+        this.setState({
+            showInvoiceModel : false,
+            selectedPatient: null,
+            patientData : {},
+            invoiceData: {},
         });
     };
 
     doDelete = () => {
         console.log("Delete final by id", this.state.selectedPatient) ;
-        const patientRef = firebase.database().ref(this.getBasePath() + this.state.selectedPatient);
+        const patientRef = firebase.database().ref(this.getRefPatientPath() + this.state.selectedPatient);
         patientRef.remove()
             .then(this.updateList)
             .catch(error => { console.error("Error deleting patient ", error)});
@@ -123,10 +157,19 @@ class SearchPatient extends Component {
 
     doUpdate = () => {
         console.log("Updating final by id", this.state.selectedPatient) ;
-        const patientRef = firebase.database().ref(this.getBasePath() + this.state.selectedPatient);
+        const patientRef = firebase.database().ref(this.getRefPatientPath() + this.state.selectedPatient);
         patientRef.update(this.state.patientData)
             .then(this.updateList)
             .then(this.cancelUpdate)
+            .catch(error => { console.error("Error updating patient ", error)});
+    };
+
+    doAddInvoice = () => {
+        console.log("Adding invoice to patient", this.state.selectedPatient) ;
+        const invoiceRef = firebase.database().ref(this.getRefInvoicePath());
+        const invoice = invoiceRef.push();
+        invoice.set(this.state.invoiceData)
+            .then(this.cancelInvoice)
             .catch(error => { console.error("Error updating patient ", error)});
     };
 
@@ -143,12 +186,28 @@ class SearchPatient extends Component {
         });
     };
 
+    handleAddInvoice = (name, required, value) => {
+        this.setState({
+            invoiceData : {
+                ...this.state.invoiceData,
+                [name]: value
+            },
+            validations : {
+                ...this.state.validations,
+                [name]: required && value === '' ? 'Campo obligatorio' : null
+            }
+        });
+    };
+
     render() {
 
         return (
             <div>
                 <SearchBox search={this.search} primaryLabel="Nombre" secondaryLabel="Teléfono" />
-                <SearchResultTable patients={this.state.patients} delete={this.delete} update={this.update}/>
+                <SearchResultTable patients={this.state.patients}
+                                   delete={this.delete}
+                                   update={this.update}
+                                   addInvoice={this.addInvoice} />
                 <Confirmation open={this.state.showDeleteAlert}
                               title="Borrar paciente"
                               text="¿Desea borrar todos los datos de este paciente?"
@@ -159,6 +218,14 @@ class SearchPatient extends Component {
                               cancel={this.cancelUpdate} accept={this.doUpdate}>
                     <Patient handleChange={this.handleChangeUpdating}
                              data={this.state.patientData}
+                             errors={this.state.validations} />
+                </ModalForm>
+                <ModalForm open={this.state.showInvoiceModel}
+                           title="Nueva factura"
+                           text="Datos de la factura"
+                           cancel={this.cancelInvoice} accept={this.doAddInvoice}>
+                    <Invoice handleChange={this.handleAddInvoice}
+                             data={this.state.invoiceData}
                              errors={this.state.validations} />
                 </ModalForm>
             </div>

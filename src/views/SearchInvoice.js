@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import SearchBox from '../common/SearchBox';
-import SearchResultTable from "../business/BillTable";
+import SearchResultTable from "../business/InvoiceTable";
 
 import firebase from "firebase/index";
 
-class SearchBill extends Component {
+class SearchInvoice extends Component {
 
     constructor() {
         super ();
@@ -75,4 +75,4 @@ class SearchBill extends Component {
     }
 }
 
-export default SearchBill;
+export default SearchInvoice;
