@@ -11,6 +11,10 @@ function Transition(props) {
     return <Slide direction="up" {...props} />;
 }
 
+const titleStyle = {
+    backgroundColor: 'blanchedalmond',
+};
+
 class Confirmation extends React.Component {
 
     render() {
@@ -24,7 +28,7 @@ class Confirmation extends React.Component {
                     aria-labelledby="alert-dialog-confirmation-title"
                     aria-describedby="alert-dialog-confirmation-description"
                 >
-                    <DialogTitle id="alert-dialog-confirmation-title">
+                    <DialogTitle id="alert-dialog-confirmation-title" style={titleStyle}>
                         {this.props.title}
                     </DialogTitle>
                     <DialogContent>

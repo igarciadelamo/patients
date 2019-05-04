@@ -10,7 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import UpdateIcon from '@material-ui/icons/Edit';
-
+import InvoiceIcon from '@material-ui/icons/NoteAdd';
 
 const CustomTableCell = withStyles(theme => ({
     head: {
@@ -49,6 +49,10 @@ class PatientTable extends Component {
         this.props.delete(id);
     };
 
+    addInvoice = id => {
+        this.props.addInvoice(id);
+    };
+
     render() {
         if (this.props.patients == null || this.props.patients.length === 0) {
             return null;
@@ -79,6 +83,9 @@ class PatientTable extends Component {
                                             <IconButton aria-label="Edit" color="primary"
                                                         onClick={() => this.update(n.id)}>
                                                 <UpdateIcon/>
+                                            </IconButton>
+                                            <IconButton aria-label="Factura" onClick={() => this.addInvoice(n.id)}>
+                                                <InvoiceIcon/>
                                             </IconButton>
                                             <IconButton aria-label="Delete" onClick={() => this.delete(n.id)}>
                                                 <DeleteIcon/>

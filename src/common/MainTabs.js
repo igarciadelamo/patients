@@ -6,7 +6,7 @@ import SearchPatient from "../views/SearchPatient";
 
 import { withStyles } from '@material-ui/core/styles';
 import NewPatient from "../views/NewPatient";
-import SearchBill from "../views/SearchBill";
+import SearchInvoice from "../views/SearchInvoice";
 
 const styles = theme => ({
     root: {
@@ -31,14 +31,16 @@ class MainTabs extends Component {
             <div className={this.props.root}>
                 <Tabs value={this.state.value} onChange={this.handleChange} fullWidth >
                     <Tab label="Mis pacientes" />
-                    <Tab label="Añadir nuevo paciente" />
-                    <Tab label="Facturas" />
-                    <Tab label="Configuración" />
+                    <Tab label="Nuevo paciente" />
+                    <Tab label="Mis Facturas" />
+                    <Tab label="Nueva factura" />
+                    <Tab label="Estadísticas" />
                 </Tabs>
                 {value === 0 && <TabView><SearchPatient user={this.props.user}/></TabView>}
                 {value === 1 && <TabView><NewPatient user={this.props.user}/></TabView>}
-                {value === 2 && <TabView><SearchBill user={this.props.user}/></TabView>}
+                {value === 2 && <TabView><SearchInvoice user={this.props.user}/></TabView>}
                 {value === 3 && <TabView/>}
+                {value === 4 && <TabView/>}
             </div>
         )
     }

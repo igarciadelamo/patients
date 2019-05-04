@@ -39,7 +39,7 @@ const styles = theme => ({
     },
 });
 
-class BillTable extends Component {
+class InvoiceTable extends Component {
 
     update = (id) => {
         this.props.update(id)
@@ -90,8 +90,8 @@ class BillTable extends Component {
     }
 }
 
-BillTable.propTypes = {
+InvoiceTable.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(BillTable);
+export default withStyles(styles)(InvoiceTable);

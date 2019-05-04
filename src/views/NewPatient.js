@@ -47,7 +47,6 @@ class NewPatient extends Component {
             console.error("Error creating patient ", error);
             this.showMessage(false);
         });
-
     };
 
     render() {
