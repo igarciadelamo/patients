@@ -9,10 +9,14 @@ class SearchInvoice extends Component {
     constructor() {
         super ();
         this.state = {
-            bills: [],
+            invoices: [],
             fields: null,
-            billData : {},
+            invoiceData : {},
         };
+    };
+
+    getRefInvoicePath = () => {
+        return this.getUser()  + '/invoices/';
     };
 
     componentDidMount(){
@@ -22,21 +26,21 @@ class SearchInvoice extends Component {
     updateList = () => {
         const list = this.executeFindAll();
         this.setState({
-            bills: this.filterBills(this.state.fields, list)
+            invoices: this.filterInvoices(this.state.fields, list)
         });
     };
 
     executeFindAll = () => {
         const data = [];
-        const billsRef = firebase.database().ref('bills/' + this.getUser());
-        billsRef.orderByChild("date").on("value", function(item) {
+        const invoicesRef = firebase.database().ref(this.getRefInvoicePath());
+        invoicesRef.orderByChild("date").on("value", function(item) {
             item.forEach(function(snapshot) {
-                const bill = snapshot.val();
-                bill.id = snapshot.key;
-                data.push(bill);
+                const invoice = snapshot.val();
+                invoice.id = snapshot.key;
+                data.push(invoice);
             });
         });
-        console.log("Found " + data.length + " bills in database");
+        console.log("Found " + data.length + " invoices in database");
         return data;
     };
 
@@ -44,12 +48,16 @@ class SearchInvoice extends Component {
         return this.props.user.uid;
     };
 
-    filterBills = (fields, bills) => {
-        return !fields ? [] : bills.filter(item => this.filterBill(fields, item))
+    seeInvoice = id => {
+       alert("See invoice " + id);
     };
 
-    filterBill = (fields, item) => {
-        return this.filterByField(fields.patient, item.name) && this.filterByField(fields.bill, item.number)
+    filterInvoices = (fields, invoices) => {
+        return !fields ? [] : invoices.filter(item => this.filterInvoice(fields, item))
+    };
+
+    filterInvoice = (fields, item) => {
+        return this.filterByField(fields.primary, item.patientName) && this.filterByField(fields.secondary, item.invoiceId)
     };
 
     filterByField = (filter, item) => {
@@ -60,7 +68,7 @@ class SearchInvoice extends Component {
         const list = this.executeFindAll();
         this.setState({
             fields: fields,
-            bills: this.filterBills(fields, list)
+            invoices: this.filterInvoices(fields, list)
         });
     };
 
@@ -69,7 +77,7 @@ class SearchInvoice extends Component {
         return (
             <div>
                 <SearchBox search={this.search} primaryLabel="Nombre" secondaryLabel="Num. Factura" />
-                <SearchResultTable bills={this.state.bills} />
+                <SearchResultTable invoices={this.state.invoices} see={this.seeInvoice}/>
             </div>
         );
     }

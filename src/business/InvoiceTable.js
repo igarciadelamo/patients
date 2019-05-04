@@ -8,9 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import UpdateIcon from '@material-ui/icons/Edit';
-
+import SeeIcon from '@material-ui/icons/Visibility';
 
 const CustomTableCell = withStyles(theme => ({
     head: {
@@ -41,52 +39,53 @@ const styles = theme => ({
 
 class InvoiceTable extends Component {
 
-    update = (id) => {
-        this.props.update(id)
-    };
-
-    delete = id => {
-        this.props.delete(id);
+    see = id => {
+        this.props.see(id);
     };
 
     render() {
-        const {classes} = this.props;
-
-        return (
-            <Paper className={classes.root}>
-                <Table className={classes.table}>
-                    <TableHead>
-                        <TableRow>
-                            <CustomTableCell>Nombre</CustomTableCell>
-                            <CustomTableCell>DNI/NIF</CustomTableCell>
-                            <CustomTableCell>Contacto</CustomTableCell>
-                            <CustomTableCell>Dirección</CustomTableCell>
-                            <CustomTableCell>Acciones</CustomTableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {this.props.bills.map(n => {
-                            return (
-                                <TableRow className={classes.row} key={n.id}>
-                                    <CustomTableCell component="th" scope="row">{n.name}</CustomTableCell>
-                                    <CustomTableCell>{n.dni}</CustomTableCell>
-                                    <CustomTableCell>{n.email} <br/> {n.phone}</CustomTableCell>
-                                    <CustomTableCell>{n.address} <br/> {n.zip} {n.locality} ({n.province})</CustomTableCell>
-                                    <CustomTableCell>
-                                        <IconButton aria-label="Edit" color="primary" onClick={() => this.update(n.id)}>
-                                            <UpdateIcon/>
-                                        </IconButton>
-                                        <IconButton aria-label="Delete" onClick={() => this.delete(n.id)}>
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    </CustomTableCell>
-                                </TableRow>
-                            );
-                        })}
-                    </TableBody>
-                </Table>
-            </Paper>
-        );
+        if (this.props.invoices == null || this.props.invoices.length === 0) {
+            return null;
+        } else {
+            const {classes} = this.props;
+            return (
+                <Paper className={classes.root}>
+                    <Table className={classes.table}>
+                        <TableHead>
+                            <TableRow>
+                                <CustomTableCell>Num. Factura</CustomTableCell>
+                                <CustomTableCell>Destinatario</CustomTableCell>
+                                <CustomTableCell>Concepto</CustomTableCell>
+                                <CustomTableCell>Cantidad</CustomTableCell>
+                                <CustomTableCell>Fecha</CustomTableCell>
+                                <CustomTableCell>Acciones</CustomTableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {this.props.invoices.map(n => {
+                                return (
+                                    <TableRow className={classes.row} key={n.id}>
+                                        <CustomTableCell component="th" scope="row">{n.invoiceId}</CustomTableCell>
+                                        <CustomTableCell>{n.patientName} <br/> {n.patientIdCard}</CustomTableCell>
+                                        <CustomTableCell>{n.concept}</CustomTableCell>
+                                        <CustomTableCell>TOTAL: {n.total} €
+                                            <br/>B.I: {n.taxBase} €
+                                            <br/>IVA: {n.tax}%
+                                        </CustomTableCell>
+                                        <CustomTableCell>{n.date}</CustomTableCell>
+                                        <CustomTableCell>
+                                            <IconButton aria-label="See" onClick={() => this.see(n.id)}>
+                                                <SeeIcon/>
+                                            </IconButton>
+                                        </CustomTableCell>
+                                    </TableRow>
+                                );
+                            })}
+                        </TableBody>
+                    </Table>
+                </Paper>
+            );
+        }
     }
 }
 
